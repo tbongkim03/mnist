@@ -5,7 +5,7 @@
 groups = ["default", "note", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:418433be3f90e94af5b02496a6e91a07d4fa80a8b47fd2e10879740287548377"
+content_hash = "sha256:81746b09635dfbbda84d78e79db34a5ec5ec6e32af33e88facab674336cc25c1"
 
 [[metadata.targets]]
 requires_python = ">=3.11"
@@ -1649,6 +1649,17 @@ files = [
 ]
 
 [[package]]
+name = "pymysql"
+version = "1.1.1"
+requires_python = ">=3.7"
+summary = "Pure Python MySQL Driver"
+groups = ["default"]
+files = [
+    {file = "PyMySQL-1.1.1-py3-none-any.whl", hash = "sha256:4de15da4c61dc132f4fb9ab763063e693d521a80fd0e87943b9a453dd4c19d6c"},
+    {file = "pymysql-1.1.1.tar.gz", hash = "sha256:e127611aaf2b417403c60bf4dc570124aeb4a57f5f37b8e95ae399a42f904cd0"},
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.1.4"
 requires_python = ">=3.6.8"
@@ -1738,6 +1749,16 @@ groups = ["default"]
 files = [
     {file = "python_multipart-0.0.9-py3-none-any.whl", hash = "sha256:97ca7b8ea7b05f977dc3849c3ba99d51689822fab725c3703af7c866a0c2b215"},
     {file = "python_multipart-0.0.9.tar.gz", hash = "sha256:03f54688c663f1b7977105f021043b0793151e4cb1c1a9d4a11fc13d622c4026"},
+]
+
+[[package]]
+name = "pytz"
+version = "2024.2"
+summary = "World timezone definitions, modern and historical"
+groups = ["default"]
+files = [
+    {file = "pytz-2024.2-py2.py3-none-any.whl", hash = "sha256:31c7c1817eb7fae7ca4b8c7ee50c72f93aa2dd863de768e1ef4245d426aa0725"},
+    {file = "pytz-2024.2.tar.gz", hash = "sha256:2aa355083c50a0f93fa581709deac0c9ad65cca8a9e9beac660adcbd493c798a"},
 ]
 
 [[package]]
