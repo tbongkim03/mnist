@@ -1,5 +1,7 @@
+import pymysql
+import os
+
 def connect():
-    import os, pymysql
     conn = pymysql.connect(
             host = os.getenv("DB_IP", "localhost"),
             user = 'mnist',
@@ -12,7 +14,6 @@ def connect():
 
 def select(query: str, size: int):
     conn = connect()
-    import pymysql
     with conn:
         with conn.cursor(pymysql.cursors.DictCursor) as cursor:
             # Read a single record
@@ -22,3 +23,11 @@ def select(query: str, size: int):
             else:
                 result = cursor.fetchmany(size)
     return result
+
+def dml(sql, *values):
+  conn = connect()
+  with conn:
+    with conn.cursor(pymysql.cursors.DictCursor) as cursor:
+        cursor.execute(sql, values)
+        conn.commit()
+        return cursor.rowcount
