@@ -1,8 +1,18 @@
-import jigeum.seoul
 from mnist.db import select, dml
 import random
 import os
 import requests
+
+import time
+import pytz
+from pytz import timezone
+from datetime import datetime
+
+def timer():
+    kst = pytz.timezone('Asia/Seoul')
+    current_time_kst = datetime.now(kst)
+    t = current_time_kst.strftime('%Y-%m-%d %H:%M:%S')
+    return t
 
 def get_job_img_task():
    sql = """
@@ -28,7 +38,7 @@ def prediction(file_path, num):
     WHERE num=%s
     """
     presult = random.randint(0, 9)
-    dml(sql, presult, jigeum.seoul.now(), num)
+    dml(sql, presult, timer(), num)
 
     return presult
 
@@ -57,7 +67,7 @@ def run():
   # LINE 으로 처리 결과 전송
   send_line_noti(file_name, presutl)
 
-  print(jigeum.seoul.now())
+  print(timer())
 
 def send_line_noti(file_name, presutl):
     api = "https://notify-api.line.me/api/notify"
