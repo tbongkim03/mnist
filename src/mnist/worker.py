@@ -26,7 +26,7 @@ def preprocess_image(image_path):
 
     # 흑백 반전
     img = 255 - np.array(img)  # 흑백 반전
-    
+
     img = np.array(img)
     img = img.reshape(1, 28, 28, 1)  # 모델 입력 형태에 맞게 변형
     img = img / 255.0  # 정규화
@@ -35,8 +35,8 @@ def preprocess_image(image_path):
 # 예측
 def predict_digit(image_path):
     # 모델 로드
-    model = load_model('model/mnist240924.keras')  # 학습된 모델 파일 경로
-    
+    model = load_model('mnist240924.keras')  # 학습된 모델 파일 경로
+
     img = preprocess_image(image_path)
     prediction = model.predict(img)
     digit = np.argmax(prediction)
@@ -44,7 +44,7 @@ def predict_digit(image_path):
 
 def get_job_img_task():
    sql = """
-   SELECT 
+   SELECT
     num, file_name, file_path, label
    FROM image_processing
    WHERE prediction_result IS NULL
@@ -66,7 +66,7 @@ def get_job_duration(num):
     WHERE num={num}
     """
     result = select(sql, 1)
-    return result
+    return result[0]
 
 def prediction(file_path, num):
     sql = """UPDATE image_processing
@@ -85,14 +85,14 @@ def prediction(file_path, num):
 
 def run():
   """image_processing 테이블을 읽어서 가장 오래된 요청 하나씩을 처리"""
-  
+
   # STEP 1
   # image_processing 테이블의 prediction_result IS NULL 인 ROW 1 개 조회 - num 갖여오기
   job = get_job_img_task()
-    
+
   if job is None:
       print(f"{timer()} - jos is None")
-      return 
+      return
 
   num = job['num']
   file_name = job['file_name']
@@ -102,9 +102,10 @@ def run():
   # STEP 2
   # RANDOM 으로 0 ~ 9 중 하나 값을 prediction_result 컬럼에 업데이트
   # 동시에 prediction_model, prediction_time 도 업데이트
-  prediction_result = prediction(file_path, num) 
+  prediction_result = prediction(file_path, num)
   job = get_job_duration(num)
   fmt = '%Y-%m-%d %H:%M:%S'
+
   prediction_time = datetime.strptime(job['prediction_time'], fmt)
   request_time = datetime.strptime(job['request_time'], fmt)
   dt = prediction_time - request_time
@@ -112,7 +113,7 @@ def run():
   hours = int(total_seconds // 3600)
   minutes = int((total_seconds % 3600) // 60)
   seconds = int(total_seconds % 60)
-  
+
   # 출력 형식을 맞추기 위해 시간, 분, 초 조건에 맞게 문자열 생성
   duration = ''
   if hours > 0:
@@ -132,22 +133,21 @@ def send_line_noti(file_name, label, prediction_result, duration):
     api = "https://notify-api.line.me/api/notify"
     token = os.getenv('LINE_NOTI_TOKEN', 'NULL')
     h = {'Authorization':'Bearer ' + token}
-    mm = f"""🔢 숫자 예측 모델 결과 ⁉️
+    mm = f"""
+    🔢 숫자 예측 모델 결과 ⁉️
     파일명 : {file_name}
     라  벨 : {label}
     예  측 : {prediction_result}
-    시  간 : {duration} 
+    시  간 : {duration}
        """
     if int(label) == int(prediction_result):
         mm=mm+"""
-
-        🙆 정확히 예측했어요! 😍
+    🙆 정확히 예측했어요! 😍
         """
     else:
         mm=mm+"""
-
-        🤦 예측에 실패했어요.. 😰
-        글씨를 굵게 써보는건 어떨까요?
+    🤦 예측에 실패했어요.. 😰
+    글씨를 굵게 써보는건 어떨까요?
         """
     msg = {
         "message" : mm
