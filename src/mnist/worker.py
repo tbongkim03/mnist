@@ -45,7 +45,7 @@ def predict_digit(image_path):
 def get_job_img_task():
    sql = """
    SELECT 
-    num, file_name, file_path
+    num, file_name, file_path, label,
    FROM image_processing
    WHERE prediction_result IS NULL
    ORDER BY num -- 가장 오래된 요청
@@ -57,6 +57,16 @@ def get_job_img_task():
        return r[0]
    else:
        return None
+
+def get_job_duration(num):
+    sql = f"""
+    SELECT
+     prediction_time, request_time,
+    FROM image_processing
+    WHERE num={num}
+    """
+    result = select(sql, 1)
+    return result
 
 def prediction(file_path, num):
     sql = """UPDATE image_processing
@@ -93,7 +103,7 @@ def run():
   # RANDOM 으로 0 ~ 9 중 하나 값을 prediction_result 컬럼에 업데이트
   # 동시에 prediction_model, prediction_time 도 업데이트
   prediction_result = prediction(file_path, num) 
-  job = get_job_img_task()
+  job = get_job_duration(num)
   fmt = '%Y-%m-%d %H:%M:%S'
   prediction_time = datetime.strptime(job['prediction_time'], fmt)
   request_time = datetime.strptime(job['request_time'], fmt)
