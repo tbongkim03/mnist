@@ -45,7 +45,7 @@ def predict_digit(image_path):
 def get_job_img_task():
    sql = """
    SELECT 
-    num, file_name, file_path, label,
+    num, file_name, file_path, label
    FROM image_processing
    WHERE prediction_result IS NULL
    ORDER BY num -- 가장 오래된 요청
@@ -61,7 +61,7 @@ def get_job_img_task():
 def get_job_duration(num):
     sql = f"""
     SELECT
-     prediction_time, request_time,
+     prediction_time, request_time
     FROM image_processing
     WHERE num={num}
     """
