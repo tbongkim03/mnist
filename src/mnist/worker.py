@@ -91,7 +91,7 @@ def run():
   job = get_job_img_task()
 
   if job is None:
-      print(f"{timer()} - jos is None")
+      print(f"{timer()} - job is None")
       return
 
   num = job['num']
