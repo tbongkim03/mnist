@@ -35,7 +35,7 @@ def preprocess_image(image_path):
 # 예측
 def predict_digit(image_path):
     # 모델 로드
-    model = load_model('../../note/mnist240924.keras')  # 학습된 모델 파일 경로
+    model = load_model('model/mnist240924.keras')  # 학습된 모델 파일 경로
     
     img = preprocess_image(image_path)
     prediction = model.predict(img)
