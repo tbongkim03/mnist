@@ -80,7 +80,7 @@ def one():
     sql = "SELECT * FROM image_processing WHERE prediction_time IS NULL ORDER BY num LIMIT 1"
     result = select(sql, size = 1) 
 
-    return result[0]
+    return result
 
 @app.get("/many")
 def many(size: int = -1):
