@@ -38,7 +38,7 @@ async def create_file():
 
 
 @app.post("/uploadfile/")
-async def create_upload_file(file: UploadFile, insert_loop: int = 1):
+async def create_upload_file(file: UploadFile, label: int, insert_loop: int = 1):
     # 파일 저장
     img = await file.read()
     file_name = file.filename
@@ -60,12 +60,12 @@ async def create_upload_file(file: UploadFile, insert_loop: int = 1):
     # 컬럼 정보 : num (초기 인서트, 자동증가)
     # 처음 컬럼 정보 : 파일이름, 파일경로, 요청시간 (초기 인서트), 요청사용자(n00)
     # 컬럼 정보 : 예측모델, 예측결과, 예측시간 (추후 업데이트)
-    sql = "INSERT INTO image_processing(file_name, file_path, request_time, request_user) VALUES(%s, %s, %s, %s)"
+    sql = "INSERT INTO image_processing(file_name, label, file_path, request_time, request_user) VALUES(%s, %s, %s, %s, %s)"
     from mnist.db import dml
 
     insert_line = 0
     for _ in range(insert_loop):
-        insert_row = dml(sql, file_name, file_full_path, timer(), 'n13')
+        insert_row = dml(sql, file_name, label, file_full_path, timer(), 'n13')
 
     return {
             "filename": file.filename,
