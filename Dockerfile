@@ -10,7 +10,7 @@ RUN crontab /etc/cron.d/ml-work-cronjob
 COPY src/mnist/main.py /code/
 COPY run.sh run.sh
 
-RUN pip install --no-cache-dir --upgrade git+https://github.com/tbongkim03/mnist.git@0.4/model
+RUN pip install --no-cache-dir --upgrade git+https://github.com/tbongkim03/mnist.git@0.5/code
 
 CMD service cron start;uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 
