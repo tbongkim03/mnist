@@ -134,6 +134,8 @@ def run():
 def send_line_noti(file_name, label, prediction_result, duration):
     api = "https://notify-api.line.me/api/notify"
     token = os.getenv('LINE_NOTI_TOKEN', 'NULL')
+    if token == 'NULL':
+       print("환경변수가 없어요")
     h = {'Authorization':'Bearer ' + token}
     mm = f"""
     🔢 숫자 예측 모델 결과 ⁉️
